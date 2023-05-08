@@ -3,22 +3,9 @@ import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
 
-# def mae_for_df(df_true: pd.DataFrame, df_test: pd.DataFrame) -> float:
-# 	"""
-#
-# 	:param df_true:
-# 	:param df_test:
-# 	:return:
-# 	"""
-# 	mae_lst = np.array([])
-# 	for col in df_true:
-# 		mae_lst = np.append(mae_lst, mean_absolute_error(df_true[col], df_test[col]))
-# 	return mae_lst.mean()
-
-
 def prepare_data(df: pd.DataFrame, lags_list: list):
 	"""
-	Формирование train/test наборов для моделей
+	Формирование train/val/test наборов для моделей
 	:param df: Датафрейм с данными
 	:param lags_list: Список лагов (сдвигов) для формирования дополнительных столбцов с данными
 	:return: Набор train/test
@@ -33,10 +20,8 @@ def prepare_data(df: pd.DataFrame, lags_list: list):
 		data["lag_{}".format(i)] = data.y.shift(i)
 
 	data = data.fillna(0)
-	# data = data.reset_index(drop=True)
 
 	# разбиваем data на тренировочную и тестовую выборку
-
 	x_train = data.loc[:'2019-06-16'].drop(["y"], axis=1)
 	y_train = data.loc[:'2019-06-16']["y"]
 
